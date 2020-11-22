@@ -24,12 +24,12 @@ var characters = [randomLower, randomUpper, randomSpecial, randomNumber]
 // An empty array for storing functions that generate different types of random characters determined to be admissible by a series of prompts.
 var admissibleCharacters = []
 
-//Retrieves desired password length from user and stores it as an integer.  If password is too long or short, function alerts user and calls itself again to allow for correction. If password is appropriate size, it initiates the other prompts. 
+//Retrieves desired password length from user and stores it as an integer.  If password is too long, too short, or not an integer, the function alerts user and calls itself again to allow for correction. If password is an integer of appropriate size, it initiates the other prompts. 
 function lengthPrompt(){
 passwordLength = parseInt(prompt("Desired length of password?"))
-if (passwordLength < 8 || passwordLength > 128) {
-alert("Passwords must be between 8 and 128 characters in length.")
-return lengthPrompt()}
+if (!(Number.isInteger(passwordLength)) || passwordLength < 8 || passwordLength > 128) {
+alert("Password length must be input as an integer and must be between 8 and 128 characters in length.")
+  return lengthPrompt()}
 characterPrompts()}
 
 //Function that presents user with a series of prompts to determine admissible characters and password length.
@@ -50,6 +50,11 @@ if (confirm("Include special characters?")){
 if (confirm("Include numbers?")){
   admissibleCharacters.push(characters[3])
 }
+
+//If user declined all four character types, user is alerted of error and function calls itself again for correction.
+if (admissibleCharacters.length === 0){
+  alert("Passwords must be generated from at least one type of character.")
+  characterPrompts()}
 }
 
 //Generates a random integer from 0 up to the value of randomMax.
