@@ -3,11 +3,14 @@ var generateBtn = document.querySelector("#generate");
 
 //Write password to the #password input
 function writePassword() {
-  lengthPrompt()
-  var password = passwordBuilder("");
-  var passwordText = document.querySelector("#password");
-  passwordText.value = password;
-}
+  //Clears admissible character array for subsequent uses of button
+    admissibleCharacters = []
+    lengthPrompt()
+    var password = passwordBuilder("");
+    var passwordText = document.querySelector("#password");
+    passwordText.value = password;
+  }
+  
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
