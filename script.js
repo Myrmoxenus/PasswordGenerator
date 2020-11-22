@@ -3,10 +3,8 @@ var generateBtn = document.querySelector("#generate");
 
 //Write password to the #password input
 function writePassword() {
-  admissibleCharacters = []
-  necessaryTests = []
   lengthPrompt()
-  passwordBuilder("")
+  var password = passwordBuilder("");
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
 }
@@ -23,20 +21,14 @@ var specials = ["\u0020","\u0021","\u0022","\u0023","\u0024","\u0025","\u0026","
 //Array containing functions that generate random lowercaser letters, uppercase letters, special characters and numbers respectively. 
 var characters = [randomLower, randomUpper, randomSpecial, randomNumber] 
 
-// An array that contains functions that will test the final password for the presence of lowercase letters, uppercase letters, special characters, and numbers respectively.
-var testers = [noLowerTest, noUpperTest, noNumbersTest, noSpecialsTest]
-
 // An empty array for storing functions that generate different types of random characters determined to be admissible by a series of prompts.
 var admissibleCharacters = []
-
-// An empty array for storing functions that will test the final password for the presence of user selected characters
-var necessaryTests = []
 
 //Retrieves desired password length from user and stores it as an integer.  If password is too long, too short, or not an integer, the function alerts user and calls itself again to allow for correction. If password is an integer of appropriate size, it initiates the other prompts. 
 function lengthPrompt(){
 passwordLength = parseInt(prompt("Desired length of password?"))
 if (!(Number.isInteger(passwordLength)) || passwordLength < 8 || passwordLength > 128) {
-  alert("Password length must be input as an integer and must be between 8 and 128 characters in length.")
+alert("Password length must be input as an integer and must be between 8 and 128 characters in length.")
   return lengthPrompt()}
 characterPrompts()}
 
@@ -45,22 +37,18 @@ function characterPrompts(){
 
 if (confirm("Include lower case letters?")){
   admissibleCharacters.push(characters[0])
-  necessaryTests.push(testers[0])
 }
 
 if (confirm("Include upper case letters?")){
   admissibleCharacters.push(characters[1])
-  necessaryTests.push(testers[1])
 }
 
 if (confirm("Include special characters?")){
   admissibleCharacters.push(characters[2])
-  necessaryTests.push(testers[2])
 }
 
 if (confirm("Include numbers?")){
   admissibleCharacters.push(characters[3])
-  necessaryTests.push(testers[3])
 }
 
 //If user declined all four character types, user is alerted of error and function calls itself again for correction.
@@ -99,51 +87,10 @@ function randomCharacter() {
   return admissibleCharacters[randomUpTo(admissibleCharacters.length - 1)]()
 }
 
-//Tests if lowercase characters are completely absent from a candidate password.
-function noLowerTest(passwordCandidate){
-  return passwordCandidate === passwordCandidate.toUpperCase()
-}
-
-//Tests if uppercase characters are completely absent from a candidate password.
-function noUpperTest(passwordCandidate){
-  return passwordCandidate === passwordCandidate.toLowerCase()
-}
-
-//Tests if numbers are completely absent from a candidate password.
-function noNumbersTest(passwordCandidate){
-  return passwordCandidate === passwordCandidate.replace(/[0-9]/g, '')
-}
-
-//Tests if special characters are completely absent from a candidate password.
-function noSpecialsTest(passwordCandidate){
-  return passwordCandidate === passwordCandidate.replace(/[^a-zA-Z0-9]/g, '')
-}
-
-//Recursive function concatenates random characters to the password one at a time, passes the incomplete password to itself and continues until the generated string is of the desired length.
+//Recursive function concatenates random characters to the string, passes the new string to itself and continues until the generated string is of the desired length.
 function passwordBuilder(currentString) {
-  if (currentString.length === passwordLength){
-      failedTests = 0
-      qualityControl(currentString)
-  }
-  else {
-      return passwordBuilder (currentString.concat(randomCharacter()))
-  }}
-
-// Variable that stores the number of failed tests
-var failedTests = 0
-
-//Function that runs a loop that tests a candidate password against all tests in the necessary tests array, adding the results to the failedTests variable
-function testall (passwordCandidate){
-for (i = 0; i < necessaryTests.length; i++){
-failedTests = failedTests + necessaryTests[i](passwordCandidate)
-}}
-
-// Function runs testall and checks if there were any failed tests. If so, it calls passwordBuilder to generate a new password candidate. Otherwise, it returns the successful candidate.
-function qualityControl(passwordCandidate) {
-testall(passwordCandidate)
-if (failedTests == 0){
-  password = passwordCandidate
+if (currentString.length === passwordLength){
+    return currentString
 }
-else{
-  passwordBuilder("")
-}}
+    return passwordBuilder (currentString.concat(randomCharacter()))
+}
