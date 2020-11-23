@@ -36,7 +36,7 @@ var necessaryTests = []
 //Retrieves desired password length from user and stores it as an integer.  If password is too long, too short, or not an integer, the function alerts user and calls itself again to allow for correction. If password is an integer of appropriate size, it initiates the other prompts. 
 function lengthPrompt(){
 passwordLength = parseInt(prompt("Desired length of password?"))
-if (!(Number.isInteger(passwordLength)) || passwordLength < 2 || passwordLength > 128) {
+if (!(Number.isInteger(passwordLength)) || passwordLength < 8 || passwordLength > 128) {
   alert("Password length must be input as an integer and must be between 8 and 128 characters in length.")
   return lengthPrompt()}
 characterPrompts()}
